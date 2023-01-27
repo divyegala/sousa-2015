@@ -164,16 +164,16 @@ void insert_new_edges(CSR_Graph g, unsigned int *next_edgessrcdst, unsigned int 
 	}
 }
 
-__global__
-void load_weights(CSR_Graph g, unsigned int *selected_edges, unsigned int *vertex_minweight){
-	unsigned id = blockIdx.x * blockDim.x + threadIdx.x;
-	if(id >= g.nedges + 1) return;
+// __global__
+// void load_weights(CSR_Graph g, unsigned int *selected_edges, unsigned int *vertex_minweight){
+// 	unsigned id = blockIdx.x * blockDim.x + threadIdx.x;
+// 	if(id >= g.nedges + 1) return;
 
-	if(selected_edges[id] == 1)
-	{
-		vertex_minweight[id] = g.edgessrcwt[id];
-	}
-}
+// 	if(selected_edges[id] == 1)
+// 	{
+// 		vertex_minweight[id] = g.edgessrcwt[id];
+// 	}
+// }
 
 
 

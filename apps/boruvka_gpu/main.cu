@@ -1,5 +1,10 @@
 #include "BoruvkaUMinho_GPU.cuh"
 
+#include <iostream>
+#include <chrono>
+using namespace std::chrono;
+
+
 __global__
 void load_weights(CSR_Graph g, unsigned int *selected_edges, unsigned int *vertex_minweight){
 	unsigned id = blockIdx.x * blockDim.x + threadIdx.x;
@@ -23,6 +28,9 @@ int main(int argc, char *argv[]){
 	CSR_Graph *g = new CSR_Graph(argv[1]);
 	unsigned block_size = atoi(argv[2]);
 
+	cudaDeviceSynchronize();
+	auto start = high_resolution_clock::now();
+
 	MGPU_MEM(unsigned int) selected_edges = BoruvkaUMinho_GPU(g, block_size);
 
 	long unsigned int total_weight = 0;
@@ -39,7 +47,10 @@ int main(int argc, char *argv[]){
 	CudaTest(const_cast<char*>("mgpu::Reduce 2 failed"));
 
 	printf("total mst weight %lu (not counting mirrored edges (/2): %lu) and %u edges\n", total_weight*2, total_weight, mst_edges-1);
-	
+	cudaDeviceSynchronize();
+	auto stop = high_resolution_clock::now();
+	auto duration = duration_cast<microseconds>(stop - start);
+	std::cout << "Finished in: " << duration.count() << std::endl;
 
 	//selected_edges->Free();
 	//vertex_minweight->Free();
