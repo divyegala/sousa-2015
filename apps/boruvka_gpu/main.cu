@@ -47,10 +47,11 @@ int main(int argc, char *argv[]){
 	CudaTest(const_cast<char*>("mgpu::Reduce 2 failed"));
 
 	printf("total mst weight %lu (not counting mirrored edges (/2): %lu) and %u edges\n", total_weight*2, total_weight, mst_edges-1);
+
 	cudaDeviceSynchronize();
 	auto stop = high_resolution_clock::now();
 	auto duration = duration_cast<microseconds>(stop - start);
-	std::cout << "Finished in: " << duration.count() << std::endl;
+	std::cout << "Sousa Finished in: " << duration.count() << std::endl;
 
 	//selected_edges->Free();
 	//vertex_minweight->Free();
